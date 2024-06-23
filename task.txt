@@ -1,0 +1,17 @@
+REST API - JSON
+
+GET /users - HTML document render   // If open on browers will display html doc
+GET /api/users - List all users JSON - Done  // If mobile dev needs to use this the url would be /api/users
+
+GET /api/users/1 - Get the user with ID 1 - Done
+GET /api/users/2 - Get the user with ID 2 - Done
+
+Dynamic Path Paramerters - Done
+GET /api/users/:id
+:id -> Variable | Dynamic
+
+POST /api/users - Create new user 
+
+PATCH /api/users/id - Edit the user with ID 1
+
+DELETE /api/users/1 - Delete the user with ID 1
