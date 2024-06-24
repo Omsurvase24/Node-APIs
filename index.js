@@ -40,7 +40,24 @@ app.post('/api/users', (req, res) => {
 
 
 app.patch('/api/users/:id', (req, res) => {
-    return res.json({ status: "pending" });
+    const id = Number(req.params.id);
+    const updates = req.body;
+    let user = users.find(user => user.id === id);
+
+    if (user) {
+        const updateUser = { ...user, ...updates };
+
+        updateUser.id = Number(updateUser.id);   // Ensures the id remains a number
+
+        const userIndex = users.findIndex(user => user.id === id);
+        users[userIndex] = updateUser;
+        fs.writeFile('./MOCK_DATA.json', JSON.stringify(users, null, 2), (err) => {
+            if (err) return res.status(500).json({ status: "error", message: "Failed to update the user" });
+            return res.json({ status: "success", message: "User updated successfully", user: updateUser });
+        });
+    } else {
+        return res.status(404).json({ status: "error", message: "User not found" });
+    }
 });
 
 
@@ -48,7 +65,7 @@ app.delete('/api/users/:id', (req, res) => {
     const id = Number(req.params.id);
     const userIndex = users.findIndex(user => user.id === id);
 
-    if (userIndex !== -1) {
+    if (userIndex !== 1) {
         users.splice(userIndex, 1);
         fs.writeFile('./MOCK_DATA.json', JSON.stringify(users), (err) => {
             if (err) return res.status(500).json({ status: "error", message: "Failed to delete the user" });
